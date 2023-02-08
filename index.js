@@ -13,15 +13,14 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./src/page-template.js");
 const { template } = require("lodash");
 
+// creating html file
 function writeToFile(outputPath, data) {
-    // console.log(data);
-    console.log(outputPath)
-    // console.log(text);
     fs.writeFile(outputPath,data,(err) => {
         if(err) return console.log(err);
     });
 }
 
+// add another team member
 function addAnotherTeamMember({team_member_type},teamMembers) {
     switch(team_member_type) {
         case ('Engineer') :
@@ -42,22 +41,26 @@ function addAnotherTeamMember({team_member_type},teamMembers) {
         }
 }
 
+// ask questions for new intern
 function questionsForNewIntern(teamMembers) {
     return inquirer.prompt(internQuestions).then(answers => {
         teamMembers.push(new Intern(answers.intern_name,answers.intern_id,answers.intern_email,answers.intern_School))
         return addAnotherTeamMember(answers,teamMembers)});
 }
 
+// ask questions for new engineer
 function questionsForNewEngineer(teamMembers) {
     return inquirer.prompt(engineerQuestions).then(answers => {
         teamMembers.push(new Engineer(answers.engineer_name,answers.engineer_id,answers.engineer_email,answers.engineer_gitHub))
         return addAnotherTeamMember(answers,teamMembers)});
 }
 
+// check what team member user want to add
 function askUserWhoHeWantToAdd() {
     return inquirer.prompt(whoYouWantToAdd);
 }
 
+// first set of questions
 function inquirerPrompt(questions) {
     return inquirer.prompt(questions)
     .then(answers => {
